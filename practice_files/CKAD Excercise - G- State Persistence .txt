@@ -1,0 +1,234 @@
+G-
+State Persistence 
+--------------------
+20191022-2045
+
+1-
+kubectl run busybox1 --image=busybox --restart=Never -o yaml --dry-run -- /bin/sh -c 'sleep 3600' > pod_sp_1g.yaml
+
+vi pod_sp_1g.yaml
+
+
+20191022-2321
+2-
+
+nano pod_pv_2g.yaml
+--
+
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: PV
+  label: 
+    vol: mypv
+spec:
+  storageClass: Normal
+  capacity:
+    storage: 10Gi
+  accessMode:
+  - ReadWriteOnce
+  - ReadWriteMany
+  hostPath:
+    path: /etc/foo
+---
+
+kubectl create -f pod_pv_2g.yaml
+ 
+kubectl get pv
+
+
+20191022-2351
+3-
+
+nano pod_pvc_3g.yaml
+
+--
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mypvc
+  labels:
+    vol: mypv
+spec:
+  storageClassName: normal
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 4Gi
+
+
+
+
+---
+
+kubectl create -f pod_pvc_3g
+
+ 20191023-0013
+4-
+ 
+kubectl run busybox --image-=busybox --restart=Never --dry-run -o yaml -- /bin/sh -c 'sleep 3600' > pod_p_4g.yaml
+
+
+
+vi pod_p_4g.yaml
+
+
+--
+
+kind:Pod
+apiVersion: v1
+metadata:
+  name: busybox
+  labels:
+    run: busybox
+spec:
+  containers:
+  - args:
+    - /bin/sh
+    - -c
+    - sleep 3600
+    image: busybox
+    name: busybox
+    volumeMounts:
+    - name: myvolume
+      persistentVolumeClaim:
+        claimName: mypvc
+
+---
+k create -f pod_p_4g.yaml
+kubectl exec busybox -it -- cp /etc/passwd /etc/foo/passwd
+
+20191023-0043
+
+5- 
+ 
+nano pod_p_4g.yaml # edit its name and save as pod_p_4g-2
+
+kubectl create -f pod_p_4g-2.yaml 
+kubectl exec busybox2 -it /bin/sh
+# ls /etc/foo
+
+
+20191023-0048
+
+6-
+ 
+kubectl run busybox3 --image=busybox --restart=Never -- /bin/sh -c 'sleep 3600'
+
+
+kubectl run busybox --image=busybox --restart=Never -- sleep 3600
+kubectl cp busybox:/etc/passwd ./passwd1 # kubectl cp command
+# previous command might report an error, feel free to ignore it since copy command works
+cat passwd
+
+7- 
+ 
+
+8-
+ 
+9-
+ 
+10-
+ 
+11-
+
+
+12-
+ 
+
+13-
+ 
+
+14-
+ 
+
+15-
+ 
+
+16-
+ 
+17-
+ 
+   
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,158 @@
+B-
+Multi Container
+--------------------
+
+1-
+ 
+kubectl run busybox --image=busybox --restart=Never -o yaml --dry-run -- /bin/sh -c 'echo hello;sleep 3600' > pod1.yaml
+cat pod1.yaml
+
+vi pod1.yaml
+
+containers:
+  - args:
+    - /bin/sh
+    - -c
+    - echo hello;sleep 3600
+    image: busybox
+    imagePullPolicy: IfNotPresent
+    name: busybox
+    resources: {}
+  - args:
+    - /bin/sh
+    - -c
+    - echo hello;sleep 3600
+    image: busybox
+    name: busybox2
+
+ kubectl create -f pod.yaml
+# Connect to the busybox2 container within the pod
+kubectl exec -it busybox -c busybox2 -- /bin/sh
+ls
+ 
+
+
+2-
+kubectl  
+
+3-
+ 
+4-
+ 
+
+5- 
+ 
+
+6-
+ 
+
+7- 
+ 
+
+8-
+ 
+9-
+ 
+10-
+ 
+11-
+
+
+12-
+ 
+
+13-
+ 
+
+14-
+ 
+
+15-
+ 
+
+16-
+ 
+17-
+ 
+   
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

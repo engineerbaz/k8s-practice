@@ -1,0 +1,220 @@
+E-
+Observability
+--------------------
+
+201910172033
+
+1-
+ 
+kubectl run nginx1e --image=nginx --restart=Never --dry-run -o yaml > pod_lp_e1.yaml
+vi pod_lp_e1.yaml
+
+--
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: null
+  labels:
+    run: nginx1e
+  name: nginx1e
+spec:
+  containers:
+  - image: nginx
+    imagePullPolicy: IfNotPresent
+    name: nginx1e
+    resources: {}
+    livenessProbe:
+      exec:
+        command:
+        - ls
+  dnsPolicy: ClusterFirst
+  restartPolicy: Never
+status: {}
+
+
+
+--
+
+kubectl create -f pod_lp_e1.yaml
+kubectl describe pod nginx1e | grep -i liveness  
+kubectl delete -f pod_lp_e1.yaml
+
+2-
+ kubectl explain pod.spec.containers.livenessProbe  
+ 
+
+--
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: null
+  labels:
+    run: nginx1e
+  name: nginx1e
+spec:
+  containers:
+  - image: nginx
+    imagePullPolicy: IfNotPresent
+    name: nginx1e
+    resources: {}
+    livenessProbe: 
+      initialDelaySeconds: 5 # add this line
+      periodSeconds: 10 # add this line as well
+      exec:
+        command:
+        - ls
+  dnsPolicy: ClusterFirst
+  restartPolicy: Never
+status: {}
+
+--
+
+kubectl create -f pod1e.yaml
+kubectl describe po nginx | grep -i liveness
+kubectl delete -f pod1e.yaml
+
+
+20191020-1840
+
+3-
+ 
+kubectl run nginx3e --image=nginx --port=80 --restart=Never --dry-run -o yaml > pod_obs-e3.yaml
+
+--
+
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: null
+  labels:
+    run: nginx3e
+  name: nginx3e
+spec:
+  containers:
+  - image: nginx
+    imagePullPolicy: IfNotPresent
+    name: nginx3e
+    ports:
+      - containerPort: 80
+    resources: {}
+    readinessProbe:
+       httpGet:
+         path: /
+         port: 80
+  dnsPolicy: ClusterFirst
+  restartPolicy: Never
+status: {}
+
+
+---
+kubectl describe po nginx3e | grep -i readiness
+
+
+LOGGING
+20191020-1909
+
+4-
+ 
+kubectl run busybox4e --image=busybox --restart=Never -- /bin/sh -c 'i=0; while true; do echo "$i: $(date)"; i=$((i+1)); sleep 1; done'
+kubectl logs busybox -f
+
+DEBUGGING
+
+20191020-1914
+
+5- 
+kubectl run busybox5e --image=busybox --restart=Never -- /bin/sh -c 'ls /noexist'
+
+ kubectl logs busybox5e
+kubectl describe po busybox5e
+
+6-
+ 
+kubectl run busybox6e --restart=Never --image=busybox -- notexist
+kubectl logs busybox6e
+  
+#
+kubectl get events | grep -i error # you'll see the error here as well
+kubectl delete po busybox63 --force --grace-period=0
+
+ 
+ 
+ 
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

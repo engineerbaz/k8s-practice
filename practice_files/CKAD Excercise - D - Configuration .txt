@@ -1,0 +1,696 @@
+D-
+Configuration
+--------------------
+
+1-
+ 
+kubectl create cm config --from-literal=foo=lala --from-literal=foo2=lolo
+
+kubectl create configmap config --from-literal=foo=lala --from-literal=foo2=lolo
+
+
+2-
+kubectl get cm config -o yaml --export
+
+OR
+
+k describe cm config
+
+3-
+echo -e "foo3=lili\nfoo4=lele" > config.txt
+
+kubectl create cm configmap2 --from-file=config.txt
+k get cm configmap2 -o yaml
+ 
+4-
+ echo -e "var1=val1\n# this is a comment\n\nvar2=val2\n#anothercomment" > config.env
+
+kubectl create cm configmap3 --from-env-file=config.env
+kubectl get cm configmap3 -o yaml --export
+
+5- 
+
+echo -e "var3=val3\nvar4=val4" > config4.txt
+
+
+kubectl create cm configmap4 --from-file=special=config4.txt
+kubectl describe cm configmap4
+kubectl get cm configmap4 -o yaml --export
+
+6-
+k create cm options --from-literal=var5=val5
+k run nginx --image=nginx --restart=Never --dry-run -o yaml > pod_d6.yaml
+
+vi pod_d6.yaml
+
+
+--
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: null
+  labels:
+    run: nginx
+  name: nginx
+spec:
+  containers:
+  - image: nginx
+    imagePullPolicy: IfNotPresent
+    name: nginx
+    resources: {}
+    env:
+    - name: option # name of the env variable
+      valueFrom:
+        configMapKeyRef:
+          name: options # name of config map
+          key: var5 # name of the entity in config map
+  dnsPolicy: ClusterFirst
+  restartPolicy: Never
+status: {}
+
+--
+
+k create -f pod_d6.yaml
+kubectl exec -it nginx -- env | grep option # will show 'option=val5'
+
+
+7-
+k create cm anotherone --from-literal=var6=val6 --from-literal=var7=val7 
+
+k run nginx --image=nginx --restart=Never -o yaml > pod_d7.yaml
+
+vi pod_d7.yaml
+
+
+--
+
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: null
+  labels:
+    run: nginx
+  name: nginx
+spec:
+  containers:
+  - image: nginx
+    imagePullPolicy: IfNotPresent
+    name: nginx
+    resources: {}
+    envFrom: # different than previous one, that was 'env'
+    - configMapRef: # different from the previous one, was 'configMapKeyRef'
+        name: anotherone # the name of the config map
+  dnsPolicy: ClusterFirst
+  restartPolicy: Never
+status: {}
+
+--
+
+k create -f pod_d7.yaml
+k exec -it ngin1 -- env
+
+8-
+
+kubectl create configmap cmvolume --from-literal=var8=val8 --from-literal=var9=val9
+kubectl run nginx8 --image=nginx --restart=Never -o yaml --dry-run > pod_d8.yaml
+
+vi pod_d8.yaml
+
+--
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: null
+  labels:
+    run: nginx8
+  name: nginx8
+spec:
+  volumes:
+  - name: myvolume
+    configMap:
+      name: cmvolume
+  containers:
+  - image: nginx
+    name: nginx8
+    resources: {}
+    volumeMounts:
+    - name: myvolume
+      mountPath: /etc/lala
+  dnsPolicy: ClusterFirst
+  restartPolicy: Never
+status: {}
+
+---
+
+k create po -f pod_d8.yaml
+k exec -it nginx -- /bin/sh
+
+==============
+
+SecurityContext
+
+9-
+
+kubectl run nginx --image=nginx --restart=Never --dry-run -o yaml > pod_sc_d9.yaml
+vi pod_sc_d9.yaml
+
+--
+
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: null
+  labels:
+    run: nginx
+  name: nginx
+spec:
+  securityContext:
+    runAsUser: 101
+  containers:
+  - image: nginx
+    name: nginx
+    resources: {}
+  dnsPolicy: ClusterFirst
+  restartPolicy: Never
+status: {}
+
+
+--
+
+10-
+kubectl run nginx --image=nginx --restart=Never --dry-run -o yaml > pod_sc_d10.yaml
+
+nano pod_sc_d10.yaml
+
+--
+
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: null
+  labels:
+    run: nginx
+  name: nginx
+spec:
+  securityContext:
+    capabilities:
+      add: ["NET_ADMIN", "SYS_TIME"]
+  containers:
+  - image: nginx
+    name: nginx
+    resources: {}
+  dnsPolicy: ClusterFirst
+  restartPolicy: Never
+status: {}
+
+--
+
+
+======
+
+
+Requests and limits
+
+11-
+
+kubectl run nginx5 --image=nginx --restart=Never --requests='cpu=100m,memory=256Mi' --limits='cpu=200m,memory=512Mi'
+
+OR
+--
+
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: null
+  labels:
+    run: nginx
+  name: nginx
+spec:
+  containers:
+  - image: nginx
+    imagePullPolicy: Always
+    name: nginx5
+    resources:
+      limits:
+        cpu: 200m
+        memory: 512Mi
+      requests:
+        cpu: 100m
+        memory: 256Mi
+    resources: {}
+  dnsPolicy: ClusterFirst
+  restartPolicy: Never
+status: {}
+
+--
+===============
+
+201910171919
+
+
+Secrets
+=============
+
+
+12-
+
+kubectl create secret generic mysecret --from-literal=password=mypass
+
+
+
+13-
+echo -n admin > username
+
+kubectl create secret generic mysecret2 --from-file=username
+
+
+14-
+kubectl get secret mysecret2 -o yaml --export
+echo YWRtaW4K | base64 -d # on MAC it is -D, which decodes the value and shows 'admin'
+
+
+15-
+kubectl run nginx15 --image=nginx --restart=Never -o yaml --dry-run > pod_secret_d15.yaml
+
+--
+
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: null
+  labels:
+    run: nginx15
+  name: nginx15
+spec:
+  volumes:
+  - name: foo
+    secret: 
+      secretName: mysecret2
+  containers:
+  - image: nginx
+    name: nginx15
+    volumeMounts:
+    - name: foo
+      mountPath: /etc/foo
+    resources: {}
+  dnsPolicy: ClusterFirst
+  restartPolicy: Never
+status: {}
+
+
+
+---
+
+kubectl create -f pod.yaml
+kubectl exec -it nginx /bin/bash
+ls /etc/foo  # shows username
+cat /etc/foo/username # shows admin
+
+16-
+
+kubectl delete po nginx
+kubectl run nginx16 --image=nginx --restart=Never -o yaml --dry-run > pod_secret_d16.yaml
+vi pod_secret_d16.yaml
+
+--
+
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: null
+  labels:
+    run: nginx16
+  name: nginx16
+spec:
+  containers:
+  - image: nginx
+    imagePullPolicy: IfNotPresent
+    name: nginx1
+    resources: {}
+    env: # our env variables
+    - name: USERNAME # asked name
+      valueFrom:
+        secretKeyRef: # secret reference
+          name: mysecret2 # our secret's name
+          key: username # the key of the data in the secret
+  dnsPolicy: ClusterFirst
+  restartPolicy: Never
+status: {}
+
+--
+
+=======
+
+
+201910171952
+
+----
+
+
+
+17-
+
+kubectl get sa --all-namespaces
+
+
+18-
+
+kubectl create sa myuser
+
+
+19-
+
+kubectl run nginx --image=nginx --restart=Never --serviceaccount=myuser -o yaml --dry-run > pod.yaml
+kubectl apply -f pod.yaml
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Requests and limits
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+6-
+ 
+
+7- 
+ 
+
+8-
+ 
+9-
+ 
+10-
+ 
+11-
+
+
+12-
+ 
+
+13-
+ 
+
+14-
+ 
+
+15-
+ 
+
+16-
+ 
+17-
+ 
+   
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

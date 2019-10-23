@@ -1,0 +1,219 @@
+F-
+Services and Networking 
+--------------------
+20191020-2000
+
+
+1-
+
+kubectl run nginx1f --image=nginx --restart=Never --port=80  --expose
+ # observe that a pod as well as a service are created
+ 
+ 
+2-
+ kubectl get svc nginx # services
+kubectl get ep # endpoints 
+
+3- 
+kubectl get svc nginx  
+kubectl run busybox --rm --image=busybox3f -it --restart=Never -- sh
+wget -O- IP:80
+
+OR
+
+IP=$(kubectl get svc nginx --template={{.spec.clusterIP}}) 
+kubectl run busybox --rm --image=busybox -it --restart=Never --env="IP=$IP" -- wget -O- $IP:80
+
+
+20191020-2034
+
+4-
+ 
+
+
+kubectl get svc
+
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: 2018-06-25T07:55:16Z
+  name: nginx
+  namespace: default
+  resourceVersion: "93442"
+  selfLink: /api/v1/namespaces/default/services/nginx
+  uid: 191e3dac-784d-11e8-86b1-00155d9f663c
+spec:
+  clusterIP: 10.97.242.220
+  ports:
+  - port: 80
+    protocol: TCP
+    targetPort: 80
+  selector:
+    run: nginx
+  sessionAffinity: None
+  type: NodePort # change cluster IP to nodeport
+status:
+
+
+--
+
+kubectl get svc
+# result:
+NAME         TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)        AGE
+kubernetes   ClusterIP   10.96.0.1        <none>        443/TCP        1d
+nginx        NodePort    10.107.253.138   <none>        80:31931/TCP   3m
+wget -O- NODE_IP:31931 # if you're using Kubernetes with Docker for Windows/Mac, try 127.0.0.1
+#if you're using minikube, try minikube ip, then get the node ip such as 192.168.99.117
+kubectl delete svc nginx # Deletes the service
+kbuectl delete pod nginx # Deletes the pod
+
+
+20191021-0037
+
+
+5-
+
+kubectl run foo --image=dgkanatsios/simpleapp --replicas=3 --labels=app=foo --port=8080
+
+
+
+6-
+ 
+kubectl get pod -o wide
+
+
+kubectl get pods -l app=foo -o wide # 
+kubectl run busybox --image=busybox --restart=Never -it --rm -- sh
+wget -O- POD_IP:8080 
+exit
+
+
+7- 
+ kubectl expose deploy foo --port=6262 --target-port=8080
+kubectl get service foo # you will see ClusterIP as well as port 6262
+kubectl get endpoints foo # you will see the IPs of the three replica nodes, listening on port 808
+
+
+20191022-1909
+8-
+ 
+kubectl run busybox --image=Never -it --rm --restart=Never -- sh 
+wget -o- foo:6262
+
+		
+
+
+9-
+ 
+kubectl run nginx --image=nginx --replicas=2 --port=80 --expose
+
+kubectl get svc nginx2 -o yaml --export
+
+
+---
+
+20191022-2001
+
+10-
+ 
+11-
+
+
+12-
+ 
+
+13-
+ 
+
+14-
+ 
+
+15-
+ 
+
+16-
+ 
+17-
+ 
+   
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
