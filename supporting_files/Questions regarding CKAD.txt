@@ -1,0 +1,24 @@
+QUESTIONS TO BE ASKED
+======================
+
+- Do we need any SOFTWARE to INSTALL for exam?
+- Termux?
+- DO we need multiple SSH logins at a time?
+
+- Can we reload Bashrc?
+
+- can we use kubectl documentation ?
+- what about explain commands? kubectl explain po.spec
+
+
+
+
+
+
+
+
+
+
+https://kubernetes.io/docs/tasks/inject
+
+KodeKloud Page # 162

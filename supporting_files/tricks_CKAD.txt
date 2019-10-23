@@ -1,0 +1,40 @@
+1- 
+Type (without quotes) /lala in a file (mentioned below) in Vi editor to access it timely & directly
+
+---
+apiVersion: v1
+data:
+  foo: lala
+  foo2: lolo
+kind: ConfigMap
+metadata:
+  creationTimestamp: 2019-10-15T11:25:31Z
+  name: config
+  namespace: default
+  resourceVersion: 29518
+  selfLink: /api/v1/namespaces/default/configmaps/config
+  uid: e912349f-06ba-4080-9058-0a8aa63bd321
+
+---
+
+
+2- 
+Add Alias in ~/.bashrc and run bash afterwards
+
+$ nano ~/.bashrc
+# Add entries in bashrc
+$ alias cc=clear
+$ alias k=kubectl
+
+# after exiting, run command bash to activate
+
+$ bash
+
+
+
+3-Run for auto Complete feature
+$ source <(kubectl completion bash)
+
+
+
+

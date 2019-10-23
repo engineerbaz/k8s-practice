@@ -1,0 +1,16 @@
+
+GituB Repo
+---------
+
+PRACTICE 
+
+https://github.com/dgkanatsios/CKAD-exercises/blob/master/a.core_concepts.md
+
+ALL YAMLS
+
+https://github.com/dennyzhang/kubernetes-yaml-templates
+
+
+CHEATSHEET
+
+https://github.com/dennyzhang/cheatsheet-kubernetes-A4

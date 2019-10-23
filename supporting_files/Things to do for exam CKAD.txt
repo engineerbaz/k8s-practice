@@ -1,0 +1,30 @@
+
+
+
+
+Use bash aliases:
+I used following aliases to save typing commands.
+export ns=default
+alias k='kubectl -n $ns' # This helps when namespace in question doesn't have a friendly name 
+alias kdr='kubectl -n $ns -o yaml --dry-run'.  # run commands in dry run mode and generate yaml.
+However, do remember that you sometimes need to do ssh to a node or switch to root user. In that case, make sure you set the aliases properly.
+
+
+3. VIM settings
+K8s imperative commands won’t help in a few cases and you will have to write/edit YAMLs. E.g. For questions related to Persistent Volumes or Network Policies etc. I used following VIM settings to convert tabs to spaces and other syntax related help
+vim ~/.vimrc
+set nu
+set expandtab
+set shiftwidth=2
+set tabstop=2
+
+
+ alias k=kubectl
+alias cc=clear
+source <(kubectl completion bash)
+
+source <(kubectl completion bash | sed 's/kubectl/k/g' ) 
+
+
+
+
