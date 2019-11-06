@@ -1,5 +1,9 @@
 1- 
 Core Concepts
+===========================
+
+
+
 Creating a Pod and Inspecting it
 ---------------------------------
  
@@ -7,7 +11,12 @@ Creating a Pod and Inspecting it
 kubectl create namespace 
 
 
-2- 
+
+2- Configuration (18%)
+======================
+
+
+1- 
 Configuring a Pod to Use a ConfigMap
 ---------------------------------------
 
@@ -57,7 +66,7 @@ DB_USERNAME=postgres
 
 
 
-3-
+2-
 
 Configuring a Pod to Use a Secret
 
@@ -104,7 +113,7 @@ DB_PASSWORD=passwd
 
 ===
 
-4- Creating a Security Context for a Pod
+3- Creating a Security Context for a Pod
 
 ---------------------------------------------
 
@@ -208,17 +217,77 @@ kubectl create -f pod.yaml --namespace=rq-demo
 Error from server (Forbidden): error when creating "2b4_pod.yaml": pods "mypod" is forbidden: exceeded quota: app, requested: requests.memory=1G, used: requests.memory=0, limited: requests.memory=500m
 -
 
+5- Using a Service Account
+
+----------------
+
+kubectl create serviceaccount backend-team
+kubectl get serviceaccounts backend-team -o yaml --export
+kubectl run backend --image=nginx --restart=Never --serviceaccount=backend-team
+kubectl get pod backend -o yaml --export
+kubectl run backend1 --image=nginx --restart=Never --serviceaccount=backend-team
+kubectl exec -it backend1 -- /bin/sh
 
 
+==============
+
+3- MULTI CONTAINER
+
+===============
 
 
+1- 
+
+kubectl run adapter --image=busybox --restart=Never -o yaml --dry-run -- /bin/sh -c 'while true; do echo "$(date) | $(du -sh ~)" >> /var/logs/diskspace.txt; sleep 5; done;' > adapter.yaml
 
 
+---
 
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: null
+  labels:
+    run: adapter
+  name: adapter
+spec:
+  volumes:
+  - name: config-volume
+    emptyDir: {}
+  containers:
+  - args:
+    - /bin/sh
+    - -c
+    - while true; do echo "$(date) | $(du -sh ~)" >> /var/logs/diskspace.txt; sleep
+      5; done;
+    image: busybox
+    name: adapter
+    volumeMounts:
+    - name: config-volume
+      mountPath: /var/logs
+  - args:
+    - /bin/sh
+    - -c 
+    - 'sleep 20; while true; do while read LINE; do echo "$LINE" | cut -f2 -d"|" >> $(date +%Y-%m-%d-%H-%M-%S)-transformed.txt; done < /var/logs/diskspace.txt; sleep 20; done;'
+    image: busybox
+    name: transformer
+    volumeMounts:
+       - name: config-volume
+         mountPath: /var/logs
+  dnsPolicy: ClusterFirst
+  restartPolicy: Never
+status: {}
 
+---
 
+$ kubectl exec adapter --container=transformer -it -- /bin/sh
+/ # ls -l
 
+--------
 
+======================
+4 - 
+======================
 
 
 
