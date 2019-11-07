@@ -290,19 +290,194 @@ $ kubectl exec adapter --container=transformer -it -- /bin/sh
 ======================
 
 
+1- 
+----
+
+$ kubectl run hello --image=bonomat/nodejs-hello-world --restart=Never --port=3000 -o yaml --dry-run > pod.yaml
+
+
+----
+
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: null
+  labels:
+    run: hello
+  name: hello
+spec:
+  containers:
+  - image: bonomat/nodejs-hello-world
+    name: hello
+    ports:
+    - name: nodejs-port
+      containerPort: 3000
+    resources: {}
+    readinessProbe:
+      httpGet:
+        path: /
+        port: nodejs-port
+      initialDelaySeconds: 2
+    livenessProbe:
+      httpGet:
+        path: /
+        port: nodejs-port
+      initialDelaySeconds: 5 
+      periodSeconds: 8 
+  dnsPolicy: ClusterFirst
+  restartPolicy: Never
+status: {}
+
+---
+$ kubectl create -f pod.yaml
+pod/hello created
+$ kubectl exec hello -it -- /bin/sh
+/ # curl localhost:3000
+
+
+$ kubectl logs pod/hello
+Magic happens on port 3000
+
+
+2-
+------
+$ vim pod.yaml
+$ kubectl create -f pod.yaml
+
+----
+
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: null
+  labels:
+    run: failing-pod
+  name: failing-pod
+spec:
+  containers:
+  - args:
+    - /bin/sh
+    - -c
+    - while true; do echo $(date) >> ~/tmp/curr-date.txt; sleep
+      5; done;
+    image: busybox
+    name: failing-pod
+    resources: {}
+  dnsPolicy: ClusterFirst
+  restartPolicy: Never
+status: {}
+
+
+----
+
+ kubectl logs failing-pod
+
+
+$ kubectl exec failing-pod -it -- /bin/sh
+/ # mkdir -p ~/tmp/x
+/ # cd ~/tmp/x
+/ # ls -l
 
 
 
+===================================
+5- 
+===================================
+
+1-
+------
+
+
+  kubectl run frontend --image=nginx --restart=Never --dry-run -o yaml --labels=env=prod --labels=team=shy
+  kubectl run frontend --image=nginx --restart=Never --labels=env=prod,team=shiny
+  kubectl get pod/frontend -o yaml 
+  k get po
+  kubectl run backend --image=nginx --restart=Never --labels=env=prod,team=legacy,app=v1.2.4
+  kubectl run database --image=nginx --restart=Never --labels=env=prod,team=storage
+  kubectl get pod/database -o yaml 
+ 1790  kubectl annotate pod/frontend commit=2d3mg3
+ 1791  kubectl get pod/frontend -o yaml 
+ 1792  cc
+ 1793  kubectl annotate pod/backend contact='Mary Haris'
+ 1794  kubectl get pod/backend -o yaml 
+ 1795  cc
+ kubectl get pod -l 'team in (shiny, legacy)',env=prod --show-labels 
+ kubectl get pod  --show-labels 
+ kubectl label pods backend env-
+ kubectl get pod  --show-labels 
+ kubectl get pods -o yaml | grep -C 3 'annotations:'
+
+
+2-
+-----------
+
+kubectl create deployment deploy --image=nginx --dry-run -o yaml > deploy.yaml
+
+
+--
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    tier: backend
+  name: deploy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: v1
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: v1
+    spec:
+      containers:
+      - image: nginx
+        name: nginx
+        resources: {}
+status: {}
+---
+
+$ kubectl create -f deploy.yaml
+deployment.apps/deploy created
+$ kubectl get deployments
+
+$ kubectl set image deployment/deploy nginx=nginx:latest
+deployment.extensions/deploy image updated
+
+$ kubectl rollout history deploy
 
 
 
+$ kubectl rollout history deploy --revision=2
+
+kubectl rollout undo deployment/deploy --to-revision=1
+
+
+----
 
 
 
+3- Creating a Scheduled Container Operation
+
+------
+
+kubectl run current-date --schedule="* * * * *" --restart=OnFailure --image=nginx -- /bin/sh -c 'echo "Current date: $(date)"'
+
+k get cj -w
+
+ kubectl get pods --show-labels
+kubectl logs current-date-1557522540-dp8l9
+
+ kubectl get cronjobs current-date -o yaml | grep successfulJobsHistoryLimit:
+  successfulJobsHistoryLimit: 3
 
 
-
-
+ kubectl delete cronjob current-date
 
 
 
