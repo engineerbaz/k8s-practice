@@ -394,12 +394,12 @@ $ kubectl exec failing-pod -it -- /bin/sh
   kubectl run backend --image=nginx --restart=Never --labels=env=prod,team=legacy,app=v1.2.4
   kubectl run database --image=nginx --restart=Never --labels=env=prod,team=storage
   kubectl get pod/database -o yaml 
- 1790  kubectl annotate pod/frontend commit=2d3mg3
- 1791  kubectl get pod/frontend -o yaml 
- 1792  cc
- 1793  kubectl annotate pod/backend contact='Mary Haris'
- 1794  kubectl get pod/backend -o yaml 
- 1795  cc
+  kubectl annotate pod/frontend commit=2d3mg3
+  kubectl get pod/frontend -o yaml 
+  cc
+  kubectl annotate pod/backend contact='Mary Haris'
+  kubectl get pod/backend -o yaml 
+  cc
  kubectl get pod -l 'team in (shiny, legacy)',env=prod --show-labels 
  kubectl get pod  --show-labels 
  kubectl label pods backend env-
@@ -572,11 +572,37 @@ $ kubectl create -f app-stack.yaml
 
 Create Network Policy as app-stack-network-policy
 
-apiVersion: networking.k8s.io/v1
-kind: NetworkingPolicy
-metadata:
-  name: app-stack-network
+---
 
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: app-stack-network-policy
+  namespace: app-stack
+spec:
+  podSelector:
+    matchLabels:
+      app: todo
+      tier: database
+  policyTypes:
+  - Ingress
+  - Egress
+  ingress:
+  - from:
+    ports:
+    - protocol: TCP
+       port: 3306
+    - podSelector:
+        matchLabels:
+          app: todo
+          tier: backend
+
+---
+Create the network policy.
+
+$ vim app-stack-network-policy.yaml
+$ kubectl create -f app-stack-network-policy.yaml
+$ kubectl get networkpolicy --namespace app-stack
 
 
 
