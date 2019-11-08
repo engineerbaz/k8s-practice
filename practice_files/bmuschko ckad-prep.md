@@ -1,5 +1,5 @@
 # 1- Core Concepts
-===========================
+==================== 
 
 
 
@@ -603,6 +603,129 @@ Create the network policy.
 $ vim app-stack-network-policy.yaml
 $ kubectl create -f app-stack-network-policy.yaml
 $ kubectl get networkpolicy --namespace app-stack
+
+
+
+=======================
+# 7 - STATE persistence
+=========================
+
+## 1- Defining and Mounting a PersistentVolume
+----------------------------------------------
+
+
+
+--
+
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pv
+spec:
+  capacity:
+    storage: 512m
+   accessModes:
+     - ReadWriteMany
+   storageClassName: shared
+   hostPath:
+     path: /data/config
+     
+---
+
+$ kubectl create -f 7e1_pv.yaml
+$ kubectl get pv
+
+Now create YAML for Persistent Volume Claim
+
+---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: pvc
+spec:
+  storageClassName: shared
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage:256m
+  
+---
+
+$ kubectl create -f 7e2_pvc.yaml
+$ kubectl get pvc
+
+Now Create Pod to Mount PV
+
+```
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: null
+  labels:
+    run: app
+  name: app
+spec:
+  containers:
+  - image: nginx
+    name: app
+    volumeMounts:
+      - mountPath: "/data/app/config"
+        name: configpvc
+    resources: {}
+  volumes:
+    - name: configpvc
+      persistentVolumeClaim:
+        claimName: pvc
+  dnsPolicy: ClusterFirst
+  restartPolicy: Never
+status: {}
+
+```
+
+You can check the events of a Pod with the kubectl describe command. You should see an entry that indicates the successful mount.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
