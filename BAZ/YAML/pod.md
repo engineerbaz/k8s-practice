@@ -1,9 +1,9 @@
 # [CKAD](http://www.cncf.io) - Certified Kubernetse Application Devloper 
 YAML covering syllabus of CKAD
 
-## Core Concept -  Pod Creation
+## 1. Core Concept -  Pod Creation
 
-### 1- Creating Simple Pod
+### 1.1 - Creating Simple Pod
 
 Pod with Busybox image and print How are you Wold?
 
@@ -22,7 +22,7 @@ spec:
   restartPolicy: Never
 ```
 
-### 2- Define a Command and Arguments for a Container
+### 1.2 - Define a Command and Arguments for a Container
 
 Pod with Busybox image and use of arguments 
 
@@ -41,4 +41,55 @@ spec:
     args: ['Hi, World!!!']
   restartPolicy: Never    
 ```
+### 1.3 - Container with Nginx port exposed.
+
+Pod with Nginx image & Port 80 exposed
+
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginxPortExposed
+spec:
+  containers:
+  - image: nginx
+    name: nginx_port_exposed
+    ports:
+    - containerPort: 80
+```
+Now make Service for it
+
+```
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  name: 1tets-ng
+spec:
+  ports:
+  - port: 80
+    protocol: TCP
+    targetPort: 80
+  selector:
+    run: 1tets-ng
+status:
+  loadBalancer: {}
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
