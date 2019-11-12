@@ -2,6 +2,8 @@
 YAML covering syllabus of CKAD
 <img src="https://d33wubrfki0l68.cloudfront.net/69e55f968a6f44613384615c6a78b881bfe28bd6/42cd3/_common-resources/images/flower.svg" height="50%" width="70%">
 
+Kubernetes CKAD Example Questions Practical Challenge Series by https://codeburst.io/kubernetes-ckad-weekly-challenges-overview-and-tips-7282b36a2681
+
 ## 1. Core Concept -  Pod Creation
 
 ### 1.1 - Creating Simple Pod
