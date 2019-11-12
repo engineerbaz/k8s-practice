@@ -1,8 +1,9 @@
 # [CKAD](http://www.cncf.io) - Certified Kubernetse Application Devloper 
 YAML covering syllabus of CKAD
-<img src="https://d33wubrfki0l68.cloudfront.net/69e55f968a6f44613384615c6a78b881bfe28bd6/42cd3/_common-resources/images/flower.svg" height="50%" width="70%">
+<img src="https://d33wubrfki0l68.cloudfront.net/69e55f968a6f44613384615c6a78b881bfe28bd6/42cd3/_common-resources/images/flower.svg" height="40%" width="60%">
 
-Kubernetes CKAD Example Questions Practical Challenge Series by https://codeburst.io/kubernetes-ckad-weekly-challenges-overview-and-tips-7282b36a2681
+Kubernetes CKAD Example Questions Practical Challenge Series by Will Boyd (willb@linuxacademy.com) of Certified Kubernetes
+Application Developer (CKAD) Study Guide
 
 ## 1. Core Concept -  Pod Creation
 
