@@ -15,10 +15,6 @@ data:
     candy.lemon.acceptability=0
 ```
 
-https://gist.github.com/engineerbaz/ee99de08efad825027553326705d73f2
-
-<script src="https://gist.github.com/engineerbaz/ee99de08efad825027553326705d73f2.js"></script>
-
 ## db-password-secret.yml
 For Secret
 
