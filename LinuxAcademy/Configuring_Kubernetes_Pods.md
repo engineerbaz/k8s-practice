@@ -2,6 +2,17 @@
 
 ## Candy-service-config.yml
 For Config Map
+'''yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: candy-service-config
+data:
+  candy.cfg: |-
+    candy.peppermint.power=100000000
+    candy.nougat-armor.strength=10
+    candy.lemon.acceptability=0
+'''
 
 https://gist.github.com/engineerbaz/ee99de08efad825027553326705d73f2
 
