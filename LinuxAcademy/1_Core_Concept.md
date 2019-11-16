@@ -1,7 +1,3 @@
-# [CKAD](http://www.cncf.io) - Certified Kubernetse Application Devloper 
-YAML covering syllabus of CKAD
-<img src="https://d33wubrfki0l68.cloudfront.net/69e55f968a6f44613384615c6a78b881bfe28bd6/42cd3/_common-resources/images/flower.svg" height="40%" width="60%">
-
 Kubernetes CKAD Example Questions Practical Challenge Series by Will Boyd (willb@linuxacademy.com) of Certified Kubernetes
 Application Developer (CKAD) Study Guide
 
