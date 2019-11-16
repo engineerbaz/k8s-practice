@@ -1,8 +1,7 @@
 # [CKAD](http://www.cncf.io) - Certified Kubernetse Application Devloper 
 YAML covering syllabus of CKAD
 
-Kubernetes CKAD Example Questions Practical Challenge Series by Will Boyd (willb@linuxacademy.com) of Certified Kubernetes
-Application Developer (CKAD) Study Guide
+## _Certified Kubernetes Application Developer (CKAD) Study Guide_
  
 
 ## 2 - Configuration -  ConfigMaps
@@ -66,7 +65,27 @@ spec:
 ````
 
 
+## 2 - Configuration -  SecurityContexts
 
+### 2.4 Configure a Security Context for a Pod or Container
+
+Use a pod’s securityContext to specify particular OS-level privileges and permissions for a pod:
+
+```yaml
+apiVersion: v1
+kind: securityContext
+metadata:
+  name: my-securitycontext-pod
+spec:
+  runAsUser: 2000
+  fsGroup: 3000
+  containers:
+  - name: myapp-container1
+    image: busybox
+    command: ['sh', '-c', "Hello K8s! && sleep 3600"]
+    
+ ```
+  
 
 
 
