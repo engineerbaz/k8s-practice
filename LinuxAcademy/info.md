@@ -1,6 +1,7 @@
 # Exercises of LinuxAcademy
 
-Contents
+Content for Certified Kubernetes Application Developer *(CKAD)* _Study Guide_
+
 ## 1. Core Concepts
 - Kubernetes API Primitives 
 - Creating Pods 
@@ -44,7 +45,7 @@ Jobs and CronJobs . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
 Services and Networking
 20
 Services . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 20
-Service types . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 20
+Service types .
 NetworkPolicies . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 21
 Ingress rules . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 22
 Egress rules . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 22
