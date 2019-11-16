@@ -86,6 +86,33 @@ spec:
     
  ```
   
+  ## 2 - Configuration - Resource Requirements
+  
+  ### 2.5 Resource requests and limits of Pod and Container
+  
+  Resource requests and limits of Pod and Container
+  
+  ```yaml
+apiVersion: v1
+kind: Pod 
+metadata:
+  name: myapp-resource-request
+spec:
+  containers:
+  - name: myapp-container2
+    image: busybox
+    command: ['sh', '-c', "Hello K8s! && sleep 3600"]
+    resources:
+      requests:
+        memory: "64Mi"
+        cpu: "250m"
+      limits:
+        memory: "128Mi"
+        cpu: "500m"
+```
+        
+      
+    
 
 
 
