@@ -10,13 +10,13 @@ Content for *CKAD* _Study Guide_
 ## [1. Core Concepts](https://github.com/engineerbaz/k8s-practice/blob/master/LinuxAcademy/1_Core_Concept.md)
 - Kubernetes API Primitives 
 - Creating Pods 
-- Namespaces 
-- Basic Container Configuration
+- &#9745; Namespaces 
+- :heavy_check_mark: Basic Container Configuration
 
 ## 2 Configuration
 
-- ConfigMaps 
-- SecurityContexts 
+- [x] ConfigMaps 
+- [ ] SecurityContexts 
 - Resource Requirements 
 - Secrets 
 - ServiceAccounts 
