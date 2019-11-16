@@ -44,9 +44,26 @@ spec:
             name: my-cm
             key: mkey
 ```
-### 2.3 - 
+### 2.3 - Add ConfigMap data to a pod as a mounted volume:
 
-
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: my-config-map-pod
+spec:
+  - conatainers:
+    name: myapp-conatainer
+    image: busybox
+    command: ['sh', '-c', 'ls /etc/config && sleep 3600']
+    volumeMounts:
+    - name: config-volume
+      mountPath: /etc/config
+  volumes:
+   - name: config-volume
+     configMap:
+       name: myConfigMap
+````
 
 
 
