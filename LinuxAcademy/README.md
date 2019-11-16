@@ -7,7 +7,7 @@ Application Developer (CKAD) Study Guide
 
 Content for *CKAD* _Study Guide_
 
-## [1. Core Concepts](https://github.com/engineerbaz/k8s-practice/edit/master/LinuxAcademy/1_Core_Concept.md)
+## [1. Core Concepts](https://github.com/engineerbaz/k8s-practice/blob/master/LinuxAcademy/1_Core_Concept.md)
 - Kubernetes API Primitives 
 - Creating Pods 
 - Namespaces 
