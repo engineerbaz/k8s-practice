@@ -154,8 +154,27 @@ password crack, it will decode output
 echo -n ’bXlQYXNzd29yZA==’, then redirect to base64 --decode
 ```
 
+Use secret data in a container as an environment variable
 
-    
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: my-secret-pod
+spec:
+  containers:
+  - name: myapp-container
+    image: busybox
+    command: ['sh', '-c', "echo HeLLo K8s && sleep 3600"]
+    env:
+      - name: MY_PASS
+        valueFrom:
+          secretKeyRef:
+            name: my-secret
+            key: myKey
+```
+
+
 
 
 
