@@ -4,7 +4,7 @@ YAML covering syllabus of CKAD
 ## _Certified Kubernetes Application Developer (CKAD) Study Guide_
  
 
-## 2 - Configuration -  ConfigMaps
+## 2 - Configuration -  Part A - ConfigMaps
 
 
 ### 2.1 - Configure a Pod to Use a ConfigMap
@@ -65,7 +65,7 @@ spec:
 ````
 
 
-## 2 - Configuration -  SecurityContexts
+## 2 - Configuration -  Part B- SecurityContexts
 
 ### 2.4 Configure a Security Context for a Pod or Container
 
@@ -86,7 +86,7 @@ spec:
     
  ```
   
-  ## 2 - Configuration - Resource Requirements
+  ## 2 - Configuration - Part C-  Resource Requirements
   
   ### 2.5 Resource requests and limits of Pod and Container
   
@@ -110,8 +110,51 @@ spec:
         memory: "128Mi"
         cpu: "500m"
 ```
-        
-      
+## 2 - Configuration - Part D -  Secret
+
+### Create a secret
+
+```yaml
+apiVersion: v1
+kind: secret
+metadata:
+  name: my-secret
+stringData:
+  myKey: myPassword
+```
+OR
+
+```yaml
+kubectl create secret generic my-secret --from-literal=myKey=myPassword --from-literal=password='S!B\*d$zDsb'
+```
+now run command to see info about secret `kubectl get secrets my-secret -o yaml`
+
+following output will be generated.
+
+```yaml
+apiVersion: v1
+data:
+  myKey: *bXlQYXNzd29yZA==*
+  password: UyFCXCpkJHpEc2I=
+kind: Secret
+metadata:
+  creationTimestamp: "2019-11-17T08:27:28Z"
+  name: my-secret
+  namespace: default
+  resourceVersion: "217117"
+  selfLink: /api/v1/namespaces/default/secrets/my-secret
+  uid: 9a9ef542-50a3-47ca-999d-69c546d802f2
+type: Opaque
+
+```
+
+password crack, it will decode output
+
+```yaml
+echo -n ’bXlQYXNzd29yZA==’, then redirect to base64 --decode
+```
+
+
     
 
 
