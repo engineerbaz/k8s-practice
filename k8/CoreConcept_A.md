@@ -1,5 +1,5 @@
 # Nginx pod
-
+```yaml
 apiVersion: v1
 kind: Pod
 metadata:
@@ -13,9 +13,12 @@ spec:
     name: nginx-new-ns
     ports:
     - containerPort: 80
+```
+
 --
 # Create a busybox pod (using YAML) that runs the command "env". Run it and see the output
 
+```yaml 
 apiVersion: v1
 kind: Pod
 metadata:
@@ -26,7 +29,7 @@ spec:
     image: busybox
     command: 
       - env
-      
+```      
 --
 
 
