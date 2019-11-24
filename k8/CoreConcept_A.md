@@ -50,6 +50,10 @@ Note: you can check pod's image by running
 
 `kubectl get po nginx -o jsonpath='{.spec.containers[].image}{"\n"}'`
 
+ # Create a busybox pod that echoes 'hello world' and then exits
+ 
+ `kubectl run bb-a2 --image=busybox -it --restart=Never -- /bin/sh -c 'echo hello world'`
+  
  
 
 ```
