@@ -54,6 +54,14 @@ Note: you can check pod's image by running
  
  `kubectl run bb-a2 --image=busybox -it --restart=Never -- /bin/sh -c 'echo hello world'`
   
+  # Create an nginx pod and set an env value as 'var1=val1'. Check the env value existence within the pod
+  
+ `kubectl run nginx --image=nginx --restart=Never --env=var1=val1`
+  
+ Check if env variable is updated
+ 
+ `kubectl exec -it nginx -- env`
+ 
  
 
 ```
