@@ -11,7 +11,6 @@ kubectl run nginx3 --image=nginx --restart=Never --labels=app=v1
 
 
 kubectl get pod --show-labels 
-
 ```
 ## Change the labels of pod 'nginx2' to be app=v2 & Remove the 'app' label from the pods we created before
 
@@ -21,7 +20,7 @@ kubectl get pod --show-labels
 kubectl label po nginx2 app-
 
 kubectl label po nginx2 app=v2 --overwrite 
-````
+```
 
 
 ## Create a pod that will be deployed to a Node that has the label 'accelerator=nvidia-tesla-p100'
