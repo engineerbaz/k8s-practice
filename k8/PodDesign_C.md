@@ -61,7 +61,31 @@ Run `kubectl rollout history deploy nginx`
 
 Run command `kubectl rollout undo deploy nginx4`
 
+## Do an on purpose update of the deployment with a wrong image nginx:1.91
+
+`kubectl edit deploy nginx`
+change the image to nginx:1.91
+vim tip: type (without quotes) '/image' and Enter, to navigate quickly
+
+Run `kubectl rollout status deploy nginx4`
 
 
+## Return the deployment to the second revision (number 2) and verify the image is nginx:1.7.9
+
+Run `kubectl rollout undo deploy nginx4 --to-revision=2`
+
+## Scale the deployment to 5 replicas
+
+Run `kubectl scale deploy nginx --replicas=5`
+
+## Autoscale the deployment, pods between 5 and 10, targetting CPU utilization at 80%
+
+``kubectl autoscale deploy nginx --min=5 --max=10 --cpu-percent=80`
+
+
+
+`
+
+  `
 
 
