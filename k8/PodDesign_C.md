@@ -52,6 +52,14 @@ Check how the deployment rollout is going `kubectl rollout status deploy nginx`
 
  ## Update the nginx image to nginx:1.7.9
 
+Use command ` kubectl set image deploy nginx4 nginx4=nginx:1.79`
+
+## Check the rollout history and confirm that the replicas are OK
+Run `kubectl rollout history deploy nginx`
+
+## Undo the latest rollout and verify that new pods have the old image (nginx:1.7.8)
+
+Run command `kubectl rollout undo deploy nginx4`
 
 
 
