@@ -39,3 +39,21 @@ spec:
 ```
 now run` kubectl apply -f pod-c-dg.yaml` 
 
+<hr>
+# Deployment
+
+## Create a deployment with image nginx:1.7.8, called nginx, having 2 replicas, defining port 80 as the port that this container exposes (don't create a service for this deployment)
+
+```yaml
+kubectl run nginx4 --image=nginx:1.7.8 --replicas=2 --port=80 --dry-run -o yaml
+```
+View the YAML of this deployment `kubectl get deploy nginx -o yaml`
+Check how the deployment rollout is going `kubectl rollout status deploy nginx`
+
+ ## Update the nginx image to nginx:1.7.9
+
+
+
+
+
+
