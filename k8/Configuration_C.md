@@ -1,4 +1,4 @@
-# Configuration 
+# ConfigMap - D
 
 ##  Create a configmap named config with values foo=lala,foo2=lolo
 
@@ -64,6 +64,8 @@ spec:
   restartPolicy: Never
 status: {}
 ```
+Check output by `kubectl exec -it cm6-ng-d-dg -- env | grep option`
+
 
 
 
