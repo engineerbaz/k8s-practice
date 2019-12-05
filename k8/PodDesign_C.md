@@ -83,8 +83,16 @@ Run `kubectl scale deploy nginx --replicas=5`
 ``kubectl autoscale deploy nginx --min=5 --max=10 --cpu-percent=80`
 
 
+# Jobs -C
 
-`
+## Create a job with image perl that runs the command with arguments "perl -Mbignum=bpi -wle 'print bpi(2000)'"
+
+```yaml
+
+ kubectl run job-c-dg --image=perl --restart=OnFailure -- perl -Mbignum=bpi -wle 'print bpi(2000)'
+```
+
+
 
   `
 
