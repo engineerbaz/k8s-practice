@@ -161,7 +161,7 @@ Now create Job by `kubectl create -f 3job-c-dg.yaml`
 
 First write simple pod by `kubectl run 3job-c-dg --image=busybox --restart=OnFailure --dry-run -o yaml -- /bin/sh "echo hello;sleep 500;" > 3job-c-dg.yaml`
 
-then edit for *running 5 times* 
+then edit for *running 5 times* as `completions: 5` // for running it 5 times.
 
 ```yaml
 
@@ -173,7 +173,7 @@ metadata:
     run: 4job-c-dg
   name: 44job-c-dg
 spec:
-  completions: 5 // for running it 5 times.
+  completions: 5
   template:
     metadata:
       creationTimestamp: null
@@ -193,9 +193,37 @@ status: {}
 
 
 ```
+then edit for *running parallel 5 * as ` parallelism: 5 ` 
+```yaml 
+
+apiVersion: batch/v1
+kind: Job
+metadata:
+  creationTimestamp: null
+  labels:
+    run: 5job-c-dg
+  name: 5job-c-dg
+spec:
+  parallelism: 5
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        run: 4job-c-dg
+    spec:
+      containers:
+      - args:
+        - /bin/sh
+        - -c
+        - echo hello;sleep 30;
+        image: busybox
+        name: 5job-c-dg
+        resources: {}
+      restartPolicy: OnFailure
+status: {}
 
 
 
-
+```
 
 
