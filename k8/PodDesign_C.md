@@ -222,8 +222,17 @@ spec:
       restartPolicy: OnFailure
 status: {}
 
+```
 
+# CronJob - C
+
+## Create a cron job with image busybox that runs on a schedule of "*/1 * * * *" and writes 'date; echo Hello from the Kubernetes cluster' to standard output
 
 ```
+kubectl run cj-c-dg --image=busybox --restart=OnFailure --schedule="*/1 * * * *" --dry-run -o yaml -- /bin/sh -c 'date; echo Hello from the Kubernetes cluster' > cj-c-dg.yaml
+```
+
+
+
 
 
