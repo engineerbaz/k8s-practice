@@ -66,10 +66,83 @@ status: {}
 ```
 Check output by `kubectl exec -it cm6-ng-d-dg -- env | grep option`
 
+## Create a configMap 'anotherone' with values 'var6=val6', 'var7=val7'. Load this configMap as env variables into a new nginx pod
 
+1st make ConfigMap ` kubectl create configmap cm7-d-dg --from-literal=var6=val6 --from-literal=var7=val7`
 
+Then run `kubectl run cm7-pod-d-dg --image=nginx --restart=Never -o yaml --dry-run > cm7-pod-d-dg`
+Edit it 
 
+```yaml 
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: null
+  labels:
+    run: cm7-pod-d-dg
+  name: cm7-pod-d-dg
+spec:
+  containers:
+  - image: nginx
+    name: cm7-pod-d-dg
+    envFrom:  # differnet then env
+     - configMapRef:
+         name: anotherone
+    resources: {}
+  dnsPolicy: ClusterFirst
+  restartPolicy: Never
+status: {}
 
+```
+
+Run it `kubectl create -f cm7-pod-d-dg`
+
+Check by `kubectl exec -it cm7-pod-d-dg -- env`
+
+## Create a configMap 'cmvolume' with values 'var8=val8', 'var9=val9'. Load this as a volume inside an nginx pod on path '/etc/lala'. Create the pod and 'ls' into the '/etc/lala' directory.
+
+Create ConfigMap `kubectl create configmap cm9-d-dg --from-literal=var8=vl8 --from-literal=var9=val9`
+
+then make YAML of Pod `kubectl run cm9-pod-d-dg --image=nginx --restart=Never --dry-run -o yaml > cm9-pod-d-dg.yaml`
+
+open in editor by `nano cm9-d-dg`
+
+```yaml
+
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: null
+  labels:
+    run: cm9-pod-d-dg
+  name: cm9-pod-d-dg
+spec:
+  volumes: # add this 
+  - name: cmvolume
+    configMap:
+      name: cm9-d-dg
+  containers:
+  - image: nginx
+    name: cm9-pod-d-dg
+    resources: {}
+    volumeMounts: # add here
+    - name: cmvolume
+      mountPath: /etc/lala
+  dnsPolicy: ClusterFirst
+  restartPolicy: Never
+status: {}
+```
+create pod by ` kubectl create -f  cm9-pod-d-dg.yaml` 
+ 
+Now check if volume has all required data 
+```yaml 
+kubectl exec -it  cm9-pod-d-dg -- /bin/sh 
+```
+Now check data by  ```bash
+cd /etc/lala
+ls # will show var8 var9
+cat var8 # will show val8
+```
 
 
 
