@@ -35,3 +35,48 @@ kubectl create configmap cm4-d-dg --from-file=special=config4.txt
 
 ```
 ##  Create a configMap called 'options' with the value var5=val5. Create a new nginx pod that loads the value from variable 'var5' in an env variable called 'option'
+
+Create ConfigMap first 'kubectl create configmap option --from-literal=var5=val5'
+then create a Pod by `kubectl run cm6-ng-d-dg --image=nginx --restart=Never --dry-run -o yaml > cm6-ng-d-dg.yaml` but dont run it 
+
+Edit pod's file in editor
+
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: null
+  labels:
+    run: cm6-ng-d-dg
+  name: cm6-ng-d-dg
+spec:
+  containers:
+  - image: nginx
+    name: cm6-ng-d-dg
+    env: # add these lines
+    - name: option
+      valueFrom:
+        configMapKeyRef:
+          name: options
+          key: var5
+    resources: {}
+  dnsPolicy: ClusterFirst
+  restartPolicy: Never
+status: {}
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
