@@ -138,11 +138,15 @@ Now check if volume has all required data
 ```yaml 
 kubectl exec -it  cm9-pod-d-dg -- /bin/sh 
 ```
-Now check data by  ```bash
+Now check data by  
+```shell
 cd /etc/lala
 ls # will show var8 var9
 cat var8 # will show val8
 ```
+
+## SecurityContext
+
 
 
 
