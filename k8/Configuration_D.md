@@ -253,6 +253,41 @@ Run `kubectl get secret mysecret -o yaml`
 
 ## Create an nginx pod that mounts the secret mysecret2 in a volume on path /etc/foo
 
+```yaml
+kubectl run sec-d-dg --image=nginx --restart=Never --dry-run -o yaml > sec-d-dg.yaml
+```
+Open it in editor
+
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: null
+  labels:
+    run: sec-d-dg
+  name: sec-d-dg
+spec:
+  volumes:
+  - name: mysecret2
+    secret:
+      secretName: mysecret2
+  containers:
+  - image: nginx
+    name: sec-d-dg
+    resources: {}
+    volumeMounts:
+    - name: mysecret2
+      mountPath: "/etc/foo"
+```
+ Create Secret & Execute 
+```yaml
+kubectl create -f  sec-d-dg.yaml 
+kubectl exec -it sec-d-dg /bin/bash
+```
+
+
+
+
 
 
 
