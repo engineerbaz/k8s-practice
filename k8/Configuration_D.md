@@ -251,5 +251,8 @@ stringData:
 
 Run `kubectl get secret mysecret -o yaml`
 
+## Create an nginx pod that mounts the secret mysecret2 in a volume on path /etc/foo
+
+
 
 
