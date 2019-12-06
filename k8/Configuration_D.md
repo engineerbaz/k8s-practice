@@ -280,12 +280,17 @@ spec:
       mountPath: "/etc/foo"
 ```
  Create Secret & Execute 
+
 ```yaml
 kubectl create -f  sec-d-dg.yaml 
-kubectl exec -it sec-d-dg /bin/bash
+kubectl exec -it sec-d-dg /bin/bash # to enter in pod
 ```
+Enter in Shell
 
-
+```yaml
+ls /etc/foo  # shows username
+cat /etc/foo/username # shows admin
+```
 
 
 
