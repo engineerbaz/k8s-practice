@@ -330,3 +330,12 @@ status: {}
 kubectl create -f pod.yaml
 kubectl exec -it nginx -- env | grep USERNAME | cut -d '=' -f 2 # will show 'admin'
 `
+# Requests and limits
+
+## Create an nginx pod with requests cpu=100m,memory=256Mi and limits cpu=200m,memory=512Mi
+
+```yaml 
+kubectl run rl1-d-dg --image=nginx --restart=Never --requests='cpu=100m,memory=256Mi' --limits='cpu=200m,memory=512Mi'
+
+```
+<hr>
