@@ -210,11 +210,11 @@ status: {}
 
 # Secret
 
-- From file \n
-  Create file first using `echo -n 'admin' > ./username.txt` then run command `kubectl create secret generic db-user-pass --from-file=./username.txt --from-file=./password.txt`
-- From Literal
-  Directly creating secret from command `kubectl create secret generic dev-db-secret --from-literal=username=devuser --from-literal=password='S!B\*d$zDsb`
-3- Creating Manually
+- *From file* <br>
+  Create file first using `echo -n 'admin' > ./username.txt` then run command `kubectl create secret generic db-user-pass --from-file=./username.txt --from-file=./password.txt` <br>
+- From Literal <br>
+  Directly creating secret from command `kubectl create secret generic dev-db-secret --from-literal=username=devuser --from-literal=password='S!B\*d$zDsb` <br>
+3- Creating Manually <br>
   -- Store string `echo -n "admin" | base64` then add in YAML 
 ```yaml
       apiVersion: v1
@@ -226,8 +226,8 @@ data:
   username: YWRtaW4=
   password: MWYyZDFlMmU2N2Rm
 ```
-then run`kubectl apply -f ./secret.yaml`
-4- stringData
+then run`kubectl apply -f ./secret.yaml` <br>
+4- stringData <br>
  -- Store stringData 
 `apiUrl: "https://my.api.com/api/v1"
 username: "user"
