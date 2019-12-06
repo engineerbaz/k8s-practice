@@ -210,9 +210,9 @@ status: {}
 
 # Secret
 
-1- From file
+- From file \n
   Create file first using `echo -n 'admin' > ./username.txt` then run command `kubectl create secret generic db-user-pass --from-file=./username.txt --from-file=./password.txt`
-2- From Literal
+- From Literal
   Directly creating secret from command `kubectl create secret generic dev-db-secret --from-literal=username=devuser --from-literal=password='S!B\*d$zDsb`
 3- Creating Manually
   -- Store string `echo -n "admin" | base64` then add in YAML 
